@@ -25,12 +25,15 @@ Configure the application with details of the Auth0 domain and client ID of your
 <resources>
     <string name="app_name">Login</string>
 
-    <string name="com_auth0_client_id">{CLIENT_ID}</string>
-    <string name="com_auth0_domain">{DOMAIN}</string>
     <string name="login">Log in</string>
     <string name="logout">Log out</string>
 </resources>
 
+```
+
+```properties
+auth0.domain=YOUR-DOMAIN.auth0.com
+auth0.client.id=YOUR-CLIENT-ID
 ```
 
 ### Callback and logout URLs

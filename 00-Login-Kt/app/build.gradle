@@ -13,9 +13,30 @@ android {
         targetSdkVersion 33
         versionCode 1
         versionName "1.0"
-        manifestPlaceholders = [auth0Domain: "@string/com_auth0_domain", auth0Scheme: "@string/com_auth0_scheme"]
+//        manifestPlaceholders = [auth0Domain: "@string/com_auth0_domain", auth0Scheme: "@string/com_auth0_scheme"]
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // Read from local.properties
+        def properties = new Properties()
+        def localPropsFile = rootProject.file("local.properties")
+        def errorMessage = "local.properties file not found"
+        if (localPropsFile.exists()) {
+            properties.load(localPropsFile.newInputStream())
+        } else {
+            throw new RuntimeException("local.properties file not found")
+        }
+
+        def auth0Domain = properties.getProperty("auth0.domain")
+        def auth0ClientId = properties.getProperty("auth0.client.id")
+        if (auth0Domain == null || auth0ClientId == null) {
+            throw new RuntimeException(errorMessage)
+        }
+
+        buildConfigField "String", "AUTH0_DOMAIN", "\"${auth0Domain}\""
+        buildConfigField "String", "AUTH0_CLIENT_ID", "\"${auth0ClientId}\""
+
+        manifestPlaceholders = [auth0Domain: auth0Domain, auth0Scheme: "@string/com_auth0_scheme"]
     }
 
     buildTypes {

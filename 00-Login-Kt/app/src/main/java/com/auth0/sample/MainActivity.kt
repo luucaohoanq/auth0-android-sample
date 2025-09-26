@@ -15,6 +15,12 @@ import com.auth0.android.result.UserProfile
 import com.auth0.sample.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
 
+
+object Auth0Config {
+    const val AUTH0_DOMAIN = BuildConfig.AUTH0_DOMAIN
+    const val AUTH0_CLIENT_ID = BuildConfig.AUTH0_CLIENT_ID
+}
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var account: Auth0
@@ -26,10 +32,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         // Set up the account object with the Auth0 application details
-        account = Auth0(
-            getString(R.string.com_auth0_client_id),
-            getString(R.string.com_auth0_domain)
-        )
+        account = Auth0(Auth0Config.AUTH0_CLIENT_ID, Auth0Config.AUTH0_DOMAIN)
 
         // Bind the button click with the login action
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -60,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         WebAuthProvider.login(account)
             .withScheme(getString(R.string.com_auth0_scheme))
             .withScope("openid profile email read:current_user update:current_user_metadata")
-            .withAudience("https://${getString(R.string.com_auth0_domain)}/api/v2/")
+            .withAudience("https://${Auth0Config.AUTH0_DOMAIN}/api/v2/")
 
             // Launch the authentication passing the callback where the results will be received
             .start(this, object : Callback<Credentials, AuthenticationException> {
